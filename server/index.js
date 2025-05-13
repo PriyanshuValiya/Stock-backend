@@ -257,6 +257,10 @@ app.get("/api/admin/users", authenticateToken, isAdmin, async (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the Admin API");
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
