@@ -20,7 +20,8 @@ const CreateUserForm = ({ onClose }) => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:3000/api/admin/create-user", {
+      // eslint-disable-next-line no-undef
+      const res = await fetch(`${process.env.BACKEND_URL}/api/admin/create-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

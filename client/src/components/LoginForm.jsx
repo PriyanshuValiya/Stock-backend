@@ -30,8 +30,10 @@ const LoginForm = ({ onClose }) => {
 
     const endpoint =
       userType === "admin"
-        ? "http://localhost:3000/api/admin/login"
-        : "http://localhost:3000/api/user/login";
+        ? // eslint-disable-next-line no-undef
+          `${process.env.BACKEND_URL}/api/admin/login`
+        : // eslint-disable-next-line no-undef
+          `${process.env.BACKEND_URL}/api/user/login`;
 
     const payload =
       userType === "admin"
