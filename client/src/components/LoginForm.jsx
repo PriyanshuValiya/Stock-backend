@@ -30,10 +30,8 @@ const LoginForm = ({ onClose }) => {
 
     const endpoint =
       userType === "admin"
-        ? // eslint-disable-next-line no-undef
-          `${process.env.BACKEND_URL}/api/admin/login`
-        : // eslint-disable-next-line no-undef
-          `${process.env.BACKEND_URL}/api/user/login`;
+        ? `https://stock-backend-v1.vercel.app/api/admin/login`
+        : `https://stock-backend-v1.vercel.app/api/user/login`;
 
     const payload =
       userType === "admin"
@@ -54,18 +52,16 @@ const LoginForm = ({ onClose }) => {
       if (res.status === 200) {
         alert("Login successful");
 
-        // ✅ Store token
         if (data.token) {
           localStorage.setItem("token", data.token);
         }
 
-        // ✅ Update user context
         setUser({
           role: userType,
           name: userType === "admin" ? formData.email : formData.name,
         });
 
-        onClose(); // Optional: close modal on successful login
+        onClose();
       } else {
         alert(data.message || "Login failed");
       }
