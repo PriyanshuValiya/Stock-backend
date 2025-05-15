@@ -24,3 +24,5 @@ bun.lockb
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
