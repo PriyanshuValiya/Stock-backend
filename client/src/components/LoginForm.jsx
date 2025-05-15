@@ -30,8 +30,8 @@ const LoginForm = ({ onClose }) => {
 
     const endpoint =
       userType === "admin"
-        ? `https://stock-backend-v1.vercel.app/api/admin/login`
-        : `https://stock-backend-v1.vercel.app/api/user/login`;
+        ? `https://stock-backend-zeta.vercel.app/api/admin/login`
+        : `https://stock-backend-zeta.vercel.app/api/user/login`;
 
     const payload =
       userType === "admin"

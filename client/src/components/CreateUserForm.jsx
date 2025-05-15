@@ -21,7 +21,7 @@ const CreateUserForm = ({ onClose }) => {
       const token = localStorage.getItem("token");
 
       // eslint-disable-next-line no-undef
-      const res = await fetch(`https://stock-backend-v1.vercel.app/api/admin/create-user`, {
+      const res = await fetch(`https://stock-backend-zeta.vercel.app/api/admin/create-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
