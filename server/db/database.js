@@ -15,13 +15,13 @@ const pool = new pg.Pool({
 const createTables = async () => {
   try {
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS admin (
+      CREATE TABLE IF NOT EXISTS "admin" (
         id SERIAL PRIMARY KEY,
         admin_name VARCHAR(100) NOT NULL,
         email VARCHAR(100) UNIQUE NOT NULL,
         admin_password VARCHAR(255) NOT NULL
       )
-    `); // Create user table
+    `); 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS "user" (
         id SERIAL PRIMARY KEY,
@@ -37,10 +37,33 @@ const createTables = async () => {
   }
 };
 
-// Initialize database
+// Create default admin account if none exists
+const createDefaultAdmin = async () => {
+  try {
+    // Check if admin account exists
+    const existingAdmin = await pool.query(
+      'SELECT * FROM "admin" WHERE email = $1',
+      ['admin@gmail.com']
+    );
+
+    if (existingAdmin.rowCount === 0) {
+      await pool.query(
+        'INSERT INTO "admin" (admin_name, email, admin_password) VALUES ($1, $2, $3)',
+        ['Default Admin', 'admin@gmail.com', '$2a$12$wxF7uMoy.vs8pKyNbbbsZONbvGDmOfL3VY3ULU6mY9XmCQOcNo']
+      );
+      console.log('Default admin account created successfully');
+    } else {
+      console.log('Admin account already exists');
+    }
+  } catch (error) {
+    console.error('Error creating default admin:', error);
+  }
+};
+
 const initializeDb = async () => {
   try {
     await createTables();
+    await createDefaultAdmin();
   } catch (error) {
     console.error("Database initialization error:", error);
   }
@@ -48,7 +71,6 @@ const initializeDb = async () => {
 
 export { pool, initializeDb };
 
-// Run initialization if this file is executed directly
 if (process.argv[1] === new URL(import.meta.url).pathname) {
   initializeDb().then(() => {
     console.log("Database initialization complete");

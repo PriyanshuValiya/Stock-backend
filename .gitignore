@@ -1,3 +1,5 @@
 server/node_modules
 server/.env
 server/test-db.js
+server/db-ops
+server/db-explorer.js
