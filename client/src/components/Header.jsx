@@ -11,8 +11,9 @@ const Header = ({ onLoginClick }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("User in Header:", user);
+    console.log("User:", user);
   }, [user]);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
@@ -25,13 +26,15 @@ const Header = ({ onLoginClick }) => {
         <Link to="/" className="hover:text-gray-300">
           JSC Terminal
         </Link>
-      </div>
-
-      <div className="flex items-center space-x-4">
+      </div>      <div className="flex items-center space-x-4">
         {loading ? (
           <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-500"></div>
         ) : user ? (
           <>
+            <span className="text-white mr-3 font-medium">
+              Welcome, <span className="font-bold">{user.name}</span>
+            </span>
+            
             {user.role === "admin" && (
               <>
                 <Link to="/admin">

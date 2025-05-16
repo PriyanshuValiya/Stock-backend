@@ -31,9 +31,7 @@ const LoginForm = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-
-    const endpoint =
+    setError("");    const endpoint =
       userType === "admin"
         ? "https://stock-backend-zeta.vercel.app/api/admin/login"
         : "https://stock-backend-zeta.vercel.app/api/user/login";
@@ -73,20 +71,20 @@ const LoginForm = ({ onClose }) => {
           onClose();
           navigate("/admin");
           return;
-        }
-
-        try {
-          await fetchUserData();
-          console.log("User data fetched");
-        } catch (fetchError) {
-          console.error("Error fetching user data:", fetchError);
+        } else {
+          try {
+            await fetchUserData();
+            onClose();
+            navigate("/user");
+            return;
+          } catch (fetchError) {
+            console.error("Error fetching user data:", fetchError);
+          }
         }
       } else {
-        console.warn("No token in response");
+        console.error("No token in response");
+        onClose();
       }
-
-      onClose();
-      navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       setError(
