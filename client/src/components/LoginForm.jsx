@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button.jsx";
-import { useUser } from "../context/UserContext.jsx";
+import { useUser } from "../context/useUser.js";
 
 const LoginForm = ({ onClose }) => {
   const [userType, setUserType] = useState("user");
@@ -9,8 +10,10 @@ const LoginForm = ({ onClose }) => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
 
-  const { setUser } = useUser();
+  const { fetchUserData } = useUser();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,15 +26,17 @@ const LoginForm = ({ onClose }) => {
   const handleUserTypeChange = (e) => {
     setUserType(e.target.value);
     setFormData({ name: "", email: "", password: "" });
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     const endpoint =
       userType === "admin"
-        ? `https://stock-backend-zeta.vercel.app/api/admin/login`
-        : `https://stock-backend-zeta.vercel.app/api/user/login`;
+        ? "http://localhost:3000/api/admin/login"
+        : "http://localhost:3000/api/user/login";
 
     const payload =
       userType === "admin"
@@ -47,30 +52,49 @@ const LoginForm = ({ onClose }) => {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (jsonError) {
+        console.error("Error parsing JSON:", jsonError);
+        setError(`Error parsing server response. Status: ${res.status}`);
+        return;
+      }
 
-      if (res.status === 200) {
-        alert("Login successful");
+      if (!res.ok) {
+        setError(data.message || `Login failed with status: ${res.status}`);
+        return;
+      }
+      if (data.token) {
+        localStorage.setItem("token", data.token);
 
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        if (userType === "admin" && data.admin) {
+          window.location.reload();
+          onClose();
+          navigate("/admin");
+          return;
         }
 
-        setUser({
-          role: userType,
-          name: userType === "admin" ? formData.email : formData.name,
-        });
-
-        onClose();
+        try {
+          await fetchUserData();
+          console.log("User data fetched");
+        } catch (fetchError) {
+          console.error("Error fetching user data:", fetchError);
+        }
       } else {
-        alert(data.message || "Login failed");
+        console.warn("No token in response");
       }
-    } catch (err) {
-      alert("Server error");
-      console.error(err);
-    }
 
-    setFormData({ name: "", email: "", password: "" });
+      onClose();
+      navigate("/");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(
+        `Connection error: ${err.message || "Could not connect to server"}`
+      );
+    } finally {
+      setFormData({ name: "", email: "", password: "" });
+    }
   };
 
   return (
@@ -85,6 +109,12 @@ const LoginForm = ({ onClose }) => {
             ✕
           </button>
         </div>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
