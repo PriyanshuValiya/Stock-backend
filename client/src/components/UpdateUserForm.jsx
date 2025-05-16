@@ -37,7 +37,7 @@ const UpdateUserForm = ({ user, onClose, onUserUpdated }) => {
       }
 
       const response = await fetch(
-        `http://localhost:3000/api/admin/users/${user.id}`,
+        `https://stock-backend-zeta.vercel.app/api/admin/users/${user.id}`,
         {
           method: "PUT",
           headers: {

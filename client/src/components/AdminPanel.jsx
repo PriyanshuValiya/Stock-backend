@@ -29,7 +29,7 @@ const AdminPanel = () => {
         }
 
         const response = await fetch(
-          `http://localhost:3000/api/admin/users${
+          `https://stock-backend-zeta.vercel.app/api/admin/users${
             cursor ? `?cursor=${cursor}` : ""
           }`,
           {
@@ -90,7 +90,7 @@ const AdminPanel = () => {
       }
 
       const response = await fetch(
-        `http://localhost:3000/api/admin/users/${userId}`,
+        `https://stock-backend-zeta.vercel.app/api/admin/users/${userId}`,
         {
           method: "DELETE",
           headers: {
