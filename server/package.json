@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
-    "dev": "nodemon index.js",
-    "init-db": "node init-db.js"
+    "start": "node start.js",
+    "dev": "nodemon start.js",
+    "init-db": "node db-ops/run-db-init.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
