@@ -35,8 +35,8 @@ const LoginForm = ({ onClose }) => {
     setError("")
     const endpoint =
       userType === "admin"
-        ? "http://localhost:3000/api/admin/login"
-        : "http://localhost:3000/api/user/login"
+        ? "https://stock-backend-zeta.vercel.app/api/admin/login"
+        : "https://stock-backend-zeta.vercel.app/api/user/login"
 
     const payload =
       userType === "admin"

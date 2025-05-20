@@ -32,7 +32,7 @@ const CreateUserForm = ({ onClose, onUserCreated }) => {
       setIsSubmitting(true)
       const token = localStorage.getItem("token")
       
-      const res = await fetch(`http://localhost:3000/api/admin/create-user`, {
+      const res = await fetch(`https://stock-backend-zeta.vercel.app/api/admin/create-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

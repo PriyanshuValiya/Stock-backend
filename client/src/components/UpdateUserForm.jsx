@@ -36,7 +36,7 @@ const UpdateUserForm = ({ user, onClose, onUserUpdated }) => {
 
       if (formData.password) {
         payload.password = formData.password
-      }      const response = await fetch(`http://localhost:3000/api/admin/users/${user.id}`, {
+      }      const response = await fetch(`https://stock-backend-zeta.vercel.app/api/admin/users/${user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

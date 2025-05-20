@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
         return
       }
 
-      const adminResponse = await fetch("http://localhost:3000/api/admin/verify", {
+      const adminResponse = await fetch("https://stock-backend-zeta.vercel.app/api/admin/verify", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ export const UserProvider = ({ children }) => {
       }
 
       if (adminResponse.status === 404 || adminResponse.status === 401 || adminResponse.status === 403) {
-        const response = await fetch("http://localhost:3000/api/user/verify", {
+        const response = await fetch("https://stock-backend-zeta.vercel.app/api/user/verify", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

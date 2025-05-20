@@ -32,7 +32,7 @@ const StockMarket = ({ openExchangeForm = false }) => {
 
   const fetchExchanges = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/exchanges");
+      const response = await fetch("https://stock-backend-zeta.vercel.app/api/exchanges");
       if (!response.ok) {
         throw new Error("Failed to fetch exchanges");
       }
@@ -48,7 +48,7 @@ const StockMarket = ({ openExchangeForm = false }) => {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:3000/api/stocks/${exchange}`
+          `https://stock-backend-zeta.vercel.app/api/stocks/${exchange}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -103,7 +103,7 @@ const StockMarket = ({ openExchangeForm = false }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-      const response = await fetch("http://localhost:3000/api/user/stocks", {
+      const response = await fetch("https://stock-backend-zeta.vercel.app/api/user/stocks", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -121,7 +121,7 @@ const StockMarket = ({ openExchangeForm = false }) => {
       setRefreshing(true);
       try {
         const response = await fetch(
-          `http://localhost:3000/api/stocks/update/${selectedExchange}`
+          `https://stock-backend-zeta.vercel.app/api/stocks/update/${selectedExchange}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -198,7 +198,7 @@ const StockMarket = ({ openExchangeForm = false }) => {
         return;
       }
 
-      const response = await fetch("http://localhost:3000/api/user/stocks", {
+      const response = await fetch("https://stock-backend-zeta.vercel.app/api/user/stocks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -227,7 +227,7 @@ const StockMarket = ({ openExchangeForm = false }) => {
       }
 
       const response = await fetch(
-        `http://localhost:3000/api/user/stocks/${stockId}`,
+        `https://stock-backend-zeta.vercel.app/api/user/stocks/${stockId}`,
         {
           method: "DELETE",
           headers: {
@@ -252,7 +252,7 @@ const StockMarket = ({ openExchangeForm = false }) => {
       }
 
       const response = await fetch(
-        "http://localhost:3000/api/admin/exchanges",
+        "https://stock-backend-zeta.vercel.app/api/admin/exchanges",
         {
           method: "POST",
           headers: {
