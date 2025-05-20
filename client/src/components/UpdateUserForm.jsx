@@ -1,66 +1,63 @@
-import { useState } from "react";
-import { Button } from "./ui/button.jsx";
+"use client"
+
+import { useState } from "react"
+import { Button } from "./ui/button.jsx"
 
 const UpdateUserForm = ({ user, onClose, onUserUpdated }) => {
   const [formData, setFormData] = useState({
     name: user.name || "",
     password: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!formData.name.trim()) {
-      setError("Username cannot be empty");
-      return;
+      setError("Username cannot be empty")
+      return
     }
 
     try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
+      setLoading(true)
+      const token = localStorage.getItem("token")
       const payload = {
         name: formData.name,
-      };
+      }
 
       if (formData.password) {
-        payload.password = formData.password;
-      }
-
-      const response = await fetch(
-        `https://stock-backend-zeta.vercel.app/api/admin/users/${user.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+        payload.password = formData.password
+      }      const response = await fetch(`http://localhost:3000/api/admin/users/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      })
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Failed to update user");
+        const data = await response.json()
+        throw new Error(data.message || "Failed to update user")
       }
 
-      onUserUpdated();
+      onUserUpdated()
     } catch (err) {
-      console.error("Error updating user:", err);
-      setError(err.message || "An error occurred while updating the user");
+      console.error("Error updating user:", err)
+      setError(err.message || "An error occurred while updating the user")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -72,18 +69,11 @@ const UpdateUserForm = ({ user, onClose, onUserUpdated }) => {
           </button>
         </div>
 
-        {error && (
-          <div className="bg-red-800 border border-red-700 text-white px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+        {error && <div className="bg-red-800 border border-red-700 text-white px-4 py-3 rounded mb-4">{error}</div>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
+            <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
               Username
             </label>
             <input
@@ -99,10 +89,7 @@ const UpdateUserForm = ({ user, onClose, onUserUpdated }) => {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
               New Password (leave blank to keep current)
             </label>
             <input
@@ -125,38 +112,28 @@ const UpdateUserForm = ({ user, onClose, onUserUpdated }) => {
             </p>
             {user.createdAt && (
               <p className="text-sm text-gray-400">
-                <span className="font-medium">Created:</span>{" "}
-                {new Date(user.createdAt).toLocaleString()}
+                <span className="font-medium">Created:</span> {new Date(user.createdAt).toLocaleString()}
               </p>
             )}
             {user.updatedAt && (
               <p className="text-sm text-gray-400">
-                <span className="font-medium">Last Updated:</span>{" "}
-                {new Date(user.updatedAt).toLocaleString()}
+                <span className="font-medium">Last Updated:</span> {new Date(user.updatedAt).toLocaleString()}
               </p>
             )}
           </div>
 
           <div className="flex justify-end space-x-3 pt-4">
-            <Button
-              type="button"
-              className="bg-gray-600 hover:bg-gray-700"
-              onClick={onClose}
-            >
+            <Button type="button" className="bg-gray-600 hover:bg-gray-700" onClick={onClose}>
               Cancel
             </Button>
-            <Button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700"
-              disabled={loading}
-            >
+            <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={loading}>
               {loading ? "Updating..." : "Update User"}
             </Button>
           </div>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UpdateUserForm;
+export default UpdateUserForm

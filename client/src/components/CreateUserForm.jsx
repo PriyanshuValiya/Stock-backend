@@ -1,68 +1,68 @@
-import { useState } from "react";
-import { Button } from "./ui/button.jsx";
-import { User } from "lucide-react";
+"use client"
+
+import { useState } from "react"
+import { Button } from "./ui/button.jsx"
+import { User } from "lucide-react"
 
 const CreateUserForm = ({ onClose, onUserCreated }) => {
   const [formData, setFormData] = useState({
     name: "",
     password: "",
     role: "user",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState("")
+  const [successMessage, setSuccessMessage] = useState("")
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!formData.name.trim() || !formData.password.trim()) {
-      setError("All fields are required");
-      return;
-    }
-
-    try {
-      setIsSubmitting(true);
-      const token = localStorage.getItem("token");
-
-      const res = await fetch(`https://stock-backend-zeta.vercel.app/api/admin/create-user`, {
+      setError("All fields are required")
+      return
+    }    try {
+      setIsSubmitting(true)
+      const token = localStorage.getItem("token")
+      
+      const res = await fetch(`http://localhost:3000/api/admin/create-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (res.status === 201) {
-        setSuccessMessage("User created successfully!");
-        setFormData({ name: "", password: "", role: "user" });
-        setError("");
+        setSuccessMessage("User created successfully!")
+        setFormData({ name: "", password: "", role: "user" })
+        setError("")
 
         if (onUserCreated) {
           setTimeout(() => {
-            onUserCreated();
-          }, 1000);
+            onUserCreated()
+          }, 1000)
         }
       } else {
-        setError(data.message || "Something went wrong");
+        setError(data.message || "Something went wrong")
       }
     } catch (err) {
-      setError("Server error. Please try again later.");
-      console.error(err);
+      setError("Server error. Please try again later.")
+      console.error(err)
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -79,10 +79,7 @@ const CreateUserForm = ({ onClose, onUserCreated }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
+            <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
               Username
             </label>
             <input
@@ -98,10 +95,7 @@ const CreateUserForm = ({ onClose, onUserCreated }) => {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
               Password
             </label>
             <input
@@ -118,21 +112,15 @@ const CreateUserForm = ({ onClose, onUserCreated }) => {
 
           {error && <div className="text-red-500 text-sm">{error}</div>}
 
-          {successMessage && (
-            <div className="text-green-500 text-sm">{successMessage}</div>
-          )}
+          {successMessage && <div className="text-green-500 text-sm">{successMessage}</div>}
 
-          <Button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isSubmitting}>
             {isSubmitting ? "Creating..." : "Create User"}
           </Button>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreateUserForm;
+export default CreateUserForm

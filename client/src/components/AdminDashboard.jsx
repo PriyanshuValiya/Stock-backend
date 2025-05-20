@@ -1,7 +1,10 @@
+"use client";
+
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "./ui/button.jsx";
 import { useUser } from "../context/useUser.js";
+import { Users, BarChart3 } from "lucide-react";
 
 const AdminDashboard = () => {
   const { user, loading } = useUser();
@@ -35,7 +38,10 @@ const AdminDashboard = () => {
         <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
           <div className="flex flex-col justify-between h-full p-6">
             <div>
-              <h2 className="text-xl font-semibold mb-3">User Management</h2>
+              <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                User Management
+              </h2>
               <p className="text-gray-400 mb-4">
                 Create, view, update, and delete users in the system.
               </p>
@@ -45,6 +51,26 @@ const AdminDashboard = () => {
                 Manage Users
               </Button>
             </Link>
+          </div>
+        </div>{" "}
+        <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+          <div className="flex flex-col justify-between h-full p-6">
+            <div>
+              <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                <BarChart3 className="h-5 w-5" />
+                Stock Market
+              </h2>
+              <p className="text-gray-400 mb-4">
+                View and manage stock market data and exchanges.
+              </p>
+            </div>
+            <div className="flex flex-col space-y-3">
+              <Link to="/admin/exchange">
+                <Button className="w-full mt-3 bg-blue-600 hover:bg-blue-700">
+                  View Stock Market
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
